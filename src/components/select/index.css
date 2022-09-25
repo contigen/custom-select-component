@@ -1,7 +1,9 @@
 .select {
     --border-width: 1px;
     --border-color: #ccc;
-    --border-radius: 20px
+    --border-radius: 20px;
+    --bg-hover-color: #eee;
+    --transition: .5s ease-in-out
 }
 
 .select__first-text {
@@ -12,14 +14,15 @@
     border: var(--border-width) solid var(--border-color);
     border-radius: var(--border-radius);
     padding: 10px 20px;
-    transition: .5s ease-in-out
+    cursor: pointer;
+    transition: var(--transition);
 }
 
 .select__details:hover {
     --border-color: #eee;
 }
 
-.select__details[open] summary:first-child {
+.select__details[open] .select__details__summary::first-line {
     font-weight: bold;
 }
 
@@ -44,14 +47,25 @@
 }
 
 .select__list li:hover {
-    /* border-bottom: var(--border-width) solid var(--border-color); */
-    background-color: #eee;
-    transition: .5s ease-in-out
+    background-color: var(--bg-hover-color);
+    transition: var(--transition)
 }
 
 .select__times {
     font-size: 2rem;
-    /* position: absolute;
-    inset: 0;
-    right: 5px; */
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    top: -17px;
+    right: -5px;
+}
+
+.select__times:hover {
+    --bg-hover-color: #aaa;
+    color: var(--bg-hover-color)
+}
+
+.select__delete-all-times {
+    text-align: right;
+    /* display: none; */
 }
