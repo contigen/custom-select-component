@@ -1,21 +1,35 @@
 import React, { useState, Fragment, useEffect, useCallback } from "react";
 import "./index.css";
+import { checkForValue, findValue } from "../../utils/";
 
 const Select = ({ multiple }) => {
   const [defaultArrItem] = useState([1, 2, 3, 4]);
   const [selectArrItem, setSelectArrItem] = useState([]);
   const handleSelect = ({ target }) => {
-    setSelectArrItem((prevValue) => [
-      // avoid creating duplicates
-      ...new Set([...prevValue, target.innerText]),
-    ]);
+    // setSelectArrItem((prevValue) => [
+    //   // avoid creating duplicates
+    //   ...new Set([...prevValue, target.innerText]),
+    // ]);
+    const targetValue = target.innerText;
+    if (checkForValue(targetValue, selectArrItem)) {
+      let targetIdx = findValue(targetValue, selectArrItem);
+      setSelectArrItem((prevValue) => [
+        ...prevValue.slice(0, targetIdx),
+        ...prevValue.slice(targetIdx + 1, prevValue.length),
+        prevValue[targetIdx],
+      ]);
+    } else {
+      setSelectArrItem((prevValue) => [...prevValue, target.innerText]);
+    }
   };
-  const deleteItem = (evt, idx) => {
-    evt.stopPropagation();
+  const deleteItem = (_, idx) => {
     setSelectArrItem((prevValue) => [
       ...prevValue.slice(0, idx),
       ...prevValue.slice(idx + 1, prevValue.length),
     ]);
+  };
+  const deleteAllItems = () => {
+    setSelectArrItem([]);
   };
   return (
     <section className="select">
@@ -39,13 +53,26 @@ const Select = ({ multiple }) => {
                   &nbsp;
                 </Fragment>
               ))
-            : // if any element in the array exists, show the last one
-              selectArrItem[0] && <span>{selectArrItem.at(-1)}</span>}
+            : // if any element in the array exists, show the spans
+              selectArrItem[0] &&
+              (() => (
+                <>
+                  <span>{selectArrItem.at(-1)}</span>
+                  <span
+                    onClick={deleteAllItems}
+                    className="select__delete-all-times"
+                  >
+                    &times;
+                  </span>
+                </>
+              ))()}
         </summary>
         <hr />
         <ul className="select__list" onClick={handleSelect}>
-          {defaultArrItem.map((item) => (
-            <li key={item}>hello{item}</li>
+          {defaultArrItem.map((item, idx) => (
+            <li key={item} tabIndex={idx + 1}>
+              hello{item}
+            </li>
           ))}
         </ul>
       </details>
