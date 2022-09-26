@@ -1,36 +1,26 @@
 import React, { useState, Fragment } from "react";
 import "./index.css";
-import { checkForValue, findValueIndex } from "../../utils/";
+import useArray from "./../../hooks/useArray";
 
 const Select = ({ multiple }) => {
   const [defaultArrItem] = useState([1, 2, 3, 4]);
-  const [selectArrItem, setSelectArrItem] = useState([]);
+  const {
+    arrayState: selectArrItem,
+    updateArrayItem,
+    deleteArrayItem,
+    clearArray,
+  } = useArray();
   const handleSelect = ({ target }) => {
     // neglect clicks outside LI elements
     if (target.tagName !== `LI`) return;
     const targetValue = target.innerText;
-    //  check for existing items, and replace them to be the last element in the array
-    if (checkForValue(targetValue, selectArrItem)) {
-      // find index of existing item
-      let targetIdx = findValueIndex(targetValue, selectArrItem);
-      //  replace existing item
-      setSelectArrItem((prevValue) => [
-        ...prevValue.slice(0, targetIdx),
-        ...prevValue.slice(targetIdx + 1, prevValue.length),
-        prevValue[targetIdx],
-      ]);
-    } else {
-      setSelectArrItem((prevValue) => [...prevValue, target.innerText]);
-    }
+    updateArrayItem(targetValue);
   };
   const deleteItem = (_, idx) => {
-    setSelectArrItem((prevValue) => [
-      ...prevValue.slice(0, idx),
-      ...prevValue.slice(idx + 1, prevValue.length),
-    ]);
+    deleteArrayItem(idx);
   };
   const deleteAllItems = () => {
-    setSelectArrItem([]);
+    clearArray();
   };
   return (
     <section className="select">
@@ -54,8 +44,7 @@ const Select = ({ multiple }) => {
                   &nbsp;
                 </Fragment>
               ))
-            : // if any element in the array exists, show the spans
-              selectArrItem[0] && <span>{selectArrItem.at(-1)}</span>}
+            : selectArrItem[0] && <span>{selectArrItem.at(-1)}</span>}
           {selectArrItem[0] && (
             <button
               onClick={deleteAllItems}
