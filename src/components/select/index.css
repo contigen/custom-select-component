@@ -66,6 +66,9 @@
 }
 
 .select__delete-all-times {
-    text-align: right;
-    /* display: none; */
+    background-color: transparent;
+    border: var(--border-width) solid var(--bg-hover-color);
+    border-radius: var(--border-radius);
+    font-weight: bold;
+    cursor: pointer;
 }
