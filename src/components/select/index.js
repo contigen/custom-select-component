@@ -1,18 +1,19 @@
-import React, { useState, Fragment, useEffect, useCallback } from "react";
+import React, { useState, Fragment } from "react";
 import "./index.css";
-import { checkForValue, findValue } from "../../utils/";
+import { checkForValue, findValueIndex } from "../../utils/";
 
 const Select = ({ multiple }) => {
   const [defaultArrItem] = useState([1, 2, 3, 4]);
   const [selectArrItem, setSelectArrItem] = useState([]);
   const handleSelect = ({ target }) => {
-    // setSelectArrItem((prevValue) => [
-    //   // avoid creating duplicates
-    //   ...new Set([...prevValue, target.innerText]),
-    // ]);
+    // neglect clicks outside LI elements
+    if (target.tagName !== `LI`) return;
     const targetValue = target.innerText;
+    //  check for existing items, and replace them to be the last element in the array
     if (checkForValue(targetValue, selectArrItem)) {
-      let targetIdx = findValue(targetValue, selectArrItem);
+      // find index of existing item
+      let targetIdx = findValueIndex(targetValue, selectArrItem);
+      //  replace existing item
       setSelectArrItem((prevValue) => [
         ...prevValue.slice(0, targetIdx),
         ...prevValue.slice(targetIdx + 1, prevValue.length),
@@ -38,7 +39,7 @@ const Select = ({ multiple }) => {
       <details className="select__details">
         <summary className="select__details__summary">
           Some details&nbsp;
-          {!multiple
+          {multiple
             ? selectArrItem.map((el, idx) => (
                 <Fragment key={el}>
                   <span>
@@ -54,18 +55,15 @@ const Select = ({ multiple }) => {
                 </Fragment>
               ))
             : // if any element in the array exists, show the spans
-              selectArrItem[0] &&
-              (() => (
-                <>
-                  <span>{selectArrItem.at(-1)}</span>
-                  <span
-                    onClick={deleteAllItems}
-                    className="select__delete-all-times"
-                  >
-                    &times;
-                  </span>
-                </>
-              ))()}
+              selectArrItem[0] && <span>{selectArrItem.at(-1)}</span>}
+          {selectArrItem[0] && (
+            <button
+              onClick={deleteAllItems}
+              className="select__delete-all-times"
+            >
+              clear all
+            </button>
+          )}
         </summary>
         <hr />
         <ul className="select__list" onClick={handleSelect}>
