@@ -7,7 +7,13 @@ export default function useArray(initialState) {
     setArrayState((prevValue) => [...prevValue, newItem]);
   };
   const updateArrayItem = (item) => {
-    // if item already exists, replace it
+    // no need to update first and last array items
+    if (
+      (arrayState.length === 1 && item === arrayState[0]) ||
+      item === arrayState.at(-1)
+    )
+      return;
+    // if item already exists, delete it and re-add
     if (checkForValue(item, arrayState)) {
       const idx = findValueIndex(item, arrayState);
       deleteArrayItem(idx);
