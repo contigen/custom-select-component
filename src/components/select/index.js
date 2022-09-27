@@ -9,7 +9,7 @@ import "./index.css";
 import useArray from "./../../hooks/useArray";
 import PropTypes from "prop-types";
 
-//@todo fix transition issue or, add keyboard functionality, and ARIA attrs
+//@todo add keyboard functionality, and ARIA attrs
 
 const Select = ({ autoselect, multiple, defaultArr }) => {
   const [defaultArrItem] = useState(defaultArr);
@@ -29,15 +29,12 @@ const Select = ({ autoselect, multiple, defaultArr }) => {
   };
   const deleteItem = (idx) => deleteArrayItem(idx);
   const deleteAllItems = () => clearArray();
-  const handleFocusedItemClick = useCallback(
+  const handleFocusedItem = useCallback(
     (evt) => {
       const mainElement = evt.srcElement;
       document.activeElement.addEventListener("keyup", (evt) => {
         if (evt.target.tagName !== `LI`) return;
-        if (evt.key === `Enter`) mainElement.click();
-        else if (autoselect) {
-          mainElement.click();
-        }
+        if (evt.key === `Enter` || autoselect) mainElement.click();
       });
     },
     [autoselect]
@@ -50,12 +47,12 @@ const Select = ({ autoselect, multiple, defaultArr }) => {
   }, []);
   useEffect(() => {
     detailsRef.current.addEventListener(`keyup`, triggerCloseState);
-    detailsRef.current.addEventListener(`focusin`, handleFocusedItemClick);
+    detailsRef.current.addEventListener(`focusin`, handleFocusedItem);
     return () => {
       document.removeEventListener(`keyup`, triggerCloseState);
       document.removeEventListener(`focusin`, triggerCloseState);
     };
-  }, [handleFocusedItemClick, triggerCloseState]);
+  }, [handleFocusedItem, triggerCloseState]);
 
   return (
     <section className="select">
@@ -92,7 +89,7 @@ const Select = ({ autoselect, multiple, defaultArr }) => {
         <hr />
         <ul className="select__list" onClick={handleSelect}>
           {defaultArrItem.map((item, idx) => (
-            <li key={item} tabIndex={idx + 1}>
+            <li key={item} tabIndex={0}>
               hello{item}
             </li>
           ))}

@@ -13,7 +13,7 @@ export default function useArray(initialState) {
       item === arrayState.at(-1)
     )
       return;
-    // if item already exists, delete it and re-add
+    // if item already exists, delete it and re-add to make it the last item
     if (checkForValue(item, arrayState)) {
       const idx = findValueIndex(item, arrayState);
       deleteArrayItem(idx);

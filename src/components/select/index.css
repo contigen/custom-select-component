@@ -11,11 +11,11 @@
 }
 
 .select__details {
+    transition: all var(--transition);
     border: var(--border-width) solid var(--border-color);
     border-radius: var(--border-radius);
     padding: 10px 20px;
     cursor: pointer;
-    transition: var(--transition);
 }
 
 .select__details:hover {
@@ -52,12 +52,17 @@
 }
 
 .select__times {
+    all: unset;
     font-size: 2rem;
     font-weight: bold;
     cursor: pointer;
     position: absolute;
     top: -17px;
     right: -5px;
+}
+
+.select__times:focus {
+    outline: 2px solid;
 }
 
 .select__times:hover {
