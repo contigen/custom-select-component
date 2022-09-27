@@ -9,8 +9,9 @@ import "./index.css";
 import useArray from "./../../hooks/useArray";
 import PropTypes from "prop-types";
 
-//@todo fix transition issue or add a custom animation, add keyboard functionality, and ARIA attrs
-const Select = ({ multiple, defaultArr }) => {
+//@todo fix transition issue or, add keyboard functionality, and ARIA attrs
+
+const Select = ({ autoselect, multiple, defaultArr }) => {
   const [defaultArrItem] = useState(defaultArr);
   const detailsRef = useRef();
   const {
@@ -19,25 +20,42 @@ const Select = ({ multiple, defaultArr }) => {
     deleteArrayItem,
     clearArray,
   } = useArray();
+  //  event delegation
   const handleSelect = ({ target }) => {
     // neglect clicks outside LI elements
     if (target.tagName !== `LI`) return;
     const targetValue = target.innerText;
     updateArrayItem(targetValue);
   };
-  const deleteItem = (_, idx) => deleteArrayItem(idx);
+  const deleteItem = (idx) => deleteArrayItem(idx);
   const deleteAllItems = () => clearArray();
+  const handleFocusedItemClick = useCallback(
+    (evt) => {
+      const mainElement = evt.srcElement;
+      document.activeElement.addEventListener("keyup", (evt) => {
+        if (evt.target.tagName !== `LI`) return;
+        if (evt.key === `Enter`) mainElement.click();
+        else if (autoselect) {
+          mainElement.click();
+        }
+      });
+    },
+    [autoselect]
+  );
   const triggerCloseState = useCallback((evt) => {
     if (evt.key !== `Escape`) return;
     if (detailsRef.current.open) {
       detailsRef.current.open = false;
     }
   }, []);
-
   useEffect(() => {
-    document.addEventListener(`keyup`, triggerCloseState);
-    return () => document.removeEventListener(`keyup`, triggerCloseState);
-  }, [triggerCloseState]);
+    detailsRef.current.addEventListener(`keyup`, triggerCloseState);
+    detailsRef.current.addEventListener(`focusin`, handleFocusedItemClick);
+    return () => {
+      document.removeEventListener(`keyup`, triggerCloseState);
+      document.removeEventListener(`focusin`, triggerCloseState);
+    };
+  }, [handleFocusedItemClick, triggerCloseState]);
 
   return (
     <section className="select">
@@ -53,7 +71,7 @@ const Select = ({ multiple, defaultArr }) => {
                     {el}
                     <button
                       className="select__times"
-                      onClick={(evt) => deleteItem(evt, idx)}
+                      onClick={() => deleteItem(idx)}
                     >
                       &times;
                     </button>
@@ -86,6 +104,7 @@ const Select = ({ multiple, defaultArr }) => {
 Select.defaultProps = {};
 
 Select.propTypes = {
+  autoselect: PropTypes.bool,
   multiple: PropTypes.bool,
   defaultArr: PropTypes.array.isRequired,
 };
