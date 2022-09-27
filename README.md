@@ -2,7 +2,7 @@
 
 The component features an HTML details element as the main
 
-The Select component has three props: `autoselect` (boolean) `multiple` (boolean) && `defaultArr` (required array), enforced with React's PropTypes library, a typing system.
+The Select component has three props: `autoselect` (boolean) `multiple` (boolean) && `defaultArr` (required array), enforced with React's PropTypes library.
 
 The autoselect prop when added, activates automatic selections when using the _`tab key`_ to focus; **multiple** prop when added, enables multiple selections or a single selection when omitted. The **defaultArr** prop contains the default options of the Select component.
 
