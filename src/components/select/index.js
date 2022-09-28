@@ -13,7 +13,9 @@ import PropTypes from "prop-types";
 
 const Select = ({ autoselect, multiple, defaultArr }) => {
   const [defaultArrItem] = useState(defaultArr);
+  const [ariaSelected, setAriaSelected] = useState(false);
   const detailsRef = useRef();
+  const listRef = useRef();
   const {
     arrayState: selectArrItem,
     updateArrayItem,
@@ -31,10 +33,43 @@ const Select = ({ autoselect, multiple, defaultArr }) => {
   const deleteAllItems = () => clearArray();
   const handleFocusedItem = useCallback(
     (evt) => {
-      const mainElement = evt.srcElement;
-      document.activeElement.addEventListener("keyup", (evt) => {
+      const focusedElement = evt.srcElement;
+      focusedElement.addEventListener("keyup", (evt) => {
         if (evt.target.tagName !== `LI`) return;
-        if (evt.key === `Enter` || autoselect) mainElement.click();
+        if (evt.key === `Enter` || autoselect) document.activeElement.click();
+        if (evt.key === `ArrowUp`) {
+          if (
+            !(
+              document.activeElement ===
+              focusedElement.parentElement.firstElementChild
+            )
+          ) {
+            focusedElement.previousElementSibling.focus();
+          }
+        } else if (evt.key === `ArrowDown`) {
+          if (
+            !(
+              document.activeElement ===
+              focusedElement.parentElement.lastElementChild
+            )
+          ) {
+            focusedElement.nextElementSibling.focus();
+          }
+        } else if (evt.key === `PageUp`) {
+          if (
+            document.activeElement ===
+            focusedElement.parentElement.firstElementChild
+          )
+            return;
+          focusedElement.parentElement.firstElementChild.focus();
+        } else if (evt.key === `PageDown`) {
+          if (
+            document.activeElement ===
+            focusedElement.parentElement.lastElementChild
+          )
+            return;
+          focusedElement.parentElement.lastElementChild.focus();
+        }
       });
     },
     [autoselect]
@@ -47,7 +82,7 @@ const Select = ({ autoselect, multiple, defaultArr }) => {
   }, []);
   useEffect(() => {
     detailsRef.current.addEventListener(`keyup`, triggerCloseState);
-    detailsRef.current.addEventListener(`focusin`, handleFocusedItem);
+    listRef.current.addEventListener(`focusin`, handleFocusedItem);
     return () => {
       document.removeEventListener(`keyup`, triggerCloseState);
       document.removeEventListener(`focusin`, triggerCloseState);
@@ -87,10 +122,16 @@ const Select = ({ autoselect, multiple, defaultArr }) => {
           )}
         </summary>
         <hr />
-        <ul className="select__list" onClick={handleSelect}>
+        <ul
+          className="select__list"
+          onClick={handleSelect}
+          role="listbox"
+          aria-multiselectable={true}
+          ref={listRef}
+        >
           {defaultArrItem.map((item, idx) => (
-            <li key={item} tabIndex={0}>
-              hello{item}
+            <li key={item} tabIndex={0} role="option" aria-selected="" id={idx}>
+              {item}
             </li>
           ))}
         </ul>
