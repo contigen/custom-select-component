@@ -8,14 +8,17 @@ import React, {
 import "./index.css";
 import useArray from "./../../hooks/useArray";
 import PropTypes from "prop-types";
-
-//@todo add keyboard functionality, and ARIA attrs
+import {
+  addSelectedAttr,
+  addSingleSelectedArr as addSingleSelectedAttr,
+  removeSelectedAttr,
+  resetSelectedAttr,
+} from "./../../utils/";
 
 const Select = ({ autoselect, multiple, defaultArr }) => {
   const [defaultArrItem] = useState(defaultArr);
-  const [ariaSelected, setAriaSelected] = useState(false);
   const detailsRef = useRef();
-  const listRef = useRef();
+  const listRef = useRef([]);
   const {
     arrayState: selectArrItem,
     updateArrayItem,
@@ -28,12 +31,20 @@ const Select = ({ autoselect, multiple, defaultArr }) => {
     if (target.tagName !== `LI`) return;
     const targetValue = target.innerText;
     updateArrayItem(targetValue);
+    const listRefElement = [...listRef.current?.children];
+    multiple
+      ? addSelectedAttr(targetValue, listRefElement)
+      : addSingleSelectedAttr(targetValue, listRefElement);
   };
   const deleteItem = (idx) => deleteArrayItem(idx);
-  const deleteAllItems = () => clearArray();
+  const deleteAllItems = () => {
+    clearArray();
+    resetSelectedAttr([...listRef.current?.children]);
+  };
+
   const handleFocusedItem = useCallback(
     (evt) => {
-      const focusedElement = evt.srcElement;
+      let focusedElement = evt.srcElement;
       focusedElement.addEventListener("keyup", (evt) => {
         if (evt.target.tagName !== `LI`) return;
         if (evt.key === `Enter` || autoselect) document.activeElement.click();
@@ -80,6 +91,7 @@ const Select = ({ autoselect, multiple, defaultArr }) => {
       detailsRef.current.open = false;
     }
   }, []);
+
   useEffect(() => {
     detailsRef.current.addEventListener(`keyup`, triggerCloseState);
     listRef.current.addEventListener(`focusin`, handleFocusedItem);
@@ -103,7 +115,10 @@ const Select = ({ autoselect, multiple, defaultArr }) => {
                     {el}
                     <button
                       className="select__times"
-                      onClick={() => deleteItem(idx)}
+                      onClick={() => {
+                        deleteItem(idx);
+                        removeSelectedAttr(el, [...listRef.current?.children]);
+                      }}
                     >
                       &times;
                     </button>
@@ -130,7 +145,13 @@ const Select = ({ autoselect, multiple, defaultArr }) => {
           ref={listRef}
         >
           {defaultArrItem.map((item, idx) => (
-            <li key={item} tabIndex={0} role="option" aria-selected="" id={idx}>
+            <li
+              key={item}
+              tabIndex={0}
+              role="option"
+              aria-selected={false}
+              id={idx}
+            >
               {item}
             </li>
           ))}
