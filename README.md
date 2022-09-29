@@ -2,6 +2,8 @@
 
 The component features an HTML details element as the main element
 
+https://user-images.githubusercontent.com/69436315/192927824-7d8a5c91-37cb-40fc-9ade-ce362352dcb1.mp4
+
 The Select component has three props: `autoselect` (boolean) `multiple` (boolean) && `defaultArr` (required array), typed with React's PropTypes library.
 
 The autoselect prop when added, activates automatic selections when using the _`tab key` or `ArrowUp && ArrowDown`_ to focus; **multiple** prop when added, enables multiple selections or a single selection when omitted. The **defaultArr** prop contains the default options of the Select component.
@@ -11,6 +13,10 @@ The autoselect prop when added, activates automatic selections when using the _`
 `esc` closes the component when open
 
 `PageUp` moves the focus to the first item, while `PageDown` moves the focus to the last item
+
+
+
+
 
 `ArrowUp` && `ArrowDown` keys control the focus of the items; the `tab` key does that by default, apparently.
 
