@@ -10,7 +10,7 @@ import useArray from "./../../hooks/useArray";
 import PropTypes from "prop-types";
 import {
   addSelectedAttr,
-  addSingleSelectedArr as addSingleSelectedAttr,
+  addSingleSelectedAttr,
   removeSelectedAttr,
   resetSelectedAttr,
 } from "./../../utils/";
@@ -37,6 +37,7 @@ const Select = ({ autoselect, multiple, defaultArr }) => {
       : addSingleSelectedAttr(targetValue, listRefElement);
   };
   const deleteItem = (idx) => deleteArrayItem(idx);
+
   const deleteAllItems = () => {
     clearArray();
     resetSelectedAttr([...listRef.current?.children]);
