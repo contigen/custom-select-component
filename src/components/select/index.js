@@ -18,7 +18,7 @@ import {
 const Select = ({ autoselect, multiple, defaultArr }) => {
   const [defaultArrItem] = useState(defaultArr);
   const detailsRef = useRef();
-  const listRef = useRef([]);
+  const listRef = useRef();
   const {
     arrayState: selectArrItem,
     updateArrayItem,
