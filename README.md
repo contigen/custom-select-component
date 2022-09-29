@@ -1,16 +1,26 @@
 # Custom Select Component
 
-The component features an HTML details element as the main
+The component features an HTML details element as the main element
 
-The Select component has three props: `autoselect` (boolean) `multiple` (boolean) && `defaultArr` (required array), enforced with React's PropTypes library.
+The Select component has three props: `autoselect` (boolean) `multiple` (boolean) && `defaultArr` (required array), typed with React's PropTypes library.
 
-The autoselect prop when added, activates automatic selections when using the _`tab key`_ to focus; **multiple** prop when added, enables multiple selections or a single selection when omitted. The **defaultArr** prop contains the default options of the Select component.
+The autoselect prop when added, activates automatic selections when using the _`tab key` or `ArrowUp && ArrowDown`_ to focus; **multiple** prop when added, enables multiple selections or a single selection when omitted. The **defaultArr** prop contains the default options of the Select component.
+
+### Keyboard functionality
+
+`esc` closes the component when open
+
+`PageUp` moves the focus to the first item, while `PageDown` moves the focus to the last item
+
+`ArrowUp` && `ArrowDown` keys control the focus of the items; the `tab` key does that by default, apparently.
+
+**Gotcha** - using the Arrow keys to move focus once or twice after initial focus of the items has an awkward behaviour.
 
 ## Code Structure
 
 `components` folder contains only the select component; this project might be extended to a bigger project for building custom components.
 
-`utils` folder contains two simple helper functions
+`utils` folder contains simple helper functions used for the component
 
 `hooks` folder contains a custom array hook used in the component
 
@@ -24,7 +34,7 @@ If you think there's a feature that needs to be implemented or anything, open a 
 
 ## Usage
 
-Feel free to use it, credits will be appreciated.
+Feel free to use it, give credits.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
