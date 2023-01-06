@@ -94,11 +94,13 @@ const Select = ({ autoselect, multiple, defaultArr }) => {
   }, []);
 
   useEffect(() => {
-    detailsRef.current.addEventListener(`keyup`, triggerCloseState);
-    listRef.current.addEventListener(`focusin`, handleFocusedItem);
+    let detailsElement = detailsRef.current;
+    let listElement = listRef.current;
+    detailsElement?.addEventListener(`keyup`, triggerCloseState);
+    listElement?.addEventListener(`focusin`, handleFocusedItem);
     return () => {
-      detailsRef.current.removeEventListener(`keyup`, triggerCloseState);
-      listRef.current.removeEventListener(`focusin`, triggerCloseState);
+      detailsElement?.removeEventListener(`keyup`, triggerCloseState);
+      listElement?.removeEventListener(`focusin`, triggerCloseState);
     };
   }, [handleFocusedItem, triggerCloseState]);
 
