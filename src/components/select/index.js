@@ -97,8 +97,8 @@ const Select = ({ autoselect, multiple, defaultArr }) => {
     detailsRef.current.addEventListener(`keyup`, triggerCloseState);
     listRef.current.addEventListener(`focusin`, handleFocusedItem);
     return () => {
-      document.removeEventListener(`keyup`, triggerCloseState);
-      document.removeEventListener(`focusin`, triggerCloseState);
+      detailsRef.current.removeEventListener(`keyup`, triggerCloseState);
+      listRef.current.removeEventListener(`focusin`, triggerCloseState);
     };
   }, [handleFocusedItem, triggerCloseState]);
 
