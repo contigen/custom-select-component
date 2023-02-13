@@ -106,8 +106,6 @@ const Select = ({ autoselect, multiple, defaultArr }) => {
 
   return (
     <section className="select">
-      <h1 className="select__first-text">Building a custom select component</h1>
-      <br />
       <details className="select__details" ref={detailsRef}>
         <summary className="select__details__summary">
           Some details&nbsp;
