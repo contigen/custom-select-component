@@ -6,10 +6,6 @@
     --transition: .5s ease-in-out
 }
 
-.select__first-text {
-    font-size: 2.25rem;
-}
-
 .select__details {
     border: var(--border-width) solid var(--border-color);
     border-radius: var(--border-radius);
