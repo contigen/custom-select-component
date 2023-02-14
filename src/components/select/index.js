@@ -26,16 +26,19 @@ const Select = ({ autoselect, multiple, defaultArr }) => {
     clearArray,
   } = useArray();
   //  event delegation
-  const handleSelect = ({ target }) => {
-    // neglect clicks outside LI elements
-    if (target.tagName !== `LI`) return;
-    const targetValue = target.innerText;
-    updateArrayItem(targetValue);
-    const listRefElement = [...listRef.current?.children];
-    multiple
-      ? addSelectedAttr(targetValue, listRefElement)
-      : addSingleSelectedAttr(targetValue, listRefElement);
-  };
+  const handleSelect = useCallback(
+    ({ target: { tagName, innerText } }) => {
+      // neglect clicks outside LI elements
+      if (tagName !== `LI`) return;
+      const targetValue = innerText;
+      updateArrayItem(targetValue);
+      const listRefElement = [...listRef.current?.children];
+      multiple
+        ? addSelectedAttr(targetValue, listRefElement)
+        : addSingleSelectedAttr(targetValue, listRefElement);
+    },
+    [multiple, updateArrayItem]
+  );
   const deleteItem = (idx) => deleteArrayItem(idx);
 
   const deleteAllItems = () => {
