@@ -49,37 +49,37 @@ const Select = ({ autoselect, multiple, defaultArr }) => {
       focusedElement.addEventListener("keyup", (evt) => {
         if (evt.target.tagName !== `LI`) return;
         if (evt.key === `Enter` || autoselect) document.activeElement.click();
-        if (evt.key === `ArrowUp`) {
-          if (
-            !(
-              document.activeElement ===
-              focusedElement.parentElement.firstElementChild
-            )
-          ) {
-            focusedElement.previousElementSibling.focus();
-          }
-        } else if (evt.key === `ArrowDown`) {
-          if (
-            !(
-              document.activeElement ===
-              focusedElement.parentElement.lastElementChild
-            )
-          ) {
-            focusedElement.nextElementSibling.focus();
-          }
-        } else if (evt.key === `PageUp`) {
-          if (
+        if (
+          evt.key === `ArrowUp` &&
+          !(
             document.activeElement ===
             focusedElement.parentElement.firstElementChild
           )
-            return;
-          focusedElement.parentElement.firstElementChild.focus();
-        } else if (evt.key === `PageDown`) {
-          if (
+        ) {
+          focusedElement.previousElementSibling.focus();
+        } else if (
+          evt.key === `ArrowDown` &&
+          !(
             document.activeElement ===
             focusedElement.parentElement.lastElementChild
           )
-            return;
+        ) {
+          focusedElement.nextElementSibling.focus();
+        } else if (
+          evt.key === `PageUp` &&
+          !(
+            document.activeElement ===
+            focusedElement.parentElement.firstElementChild
+          )
+        ) {
+          focusedElement.parentElement.firstElementChild.focus();
+        } else if (
+          evt.key === `PageDown` &&
+          !(
+            document.activeElement ===
+            focusedElement.parentElement.lastElementChild
+          )
+        ) {
           focusedElement.parentElement.lastElementChild.focus();
         }
       });
