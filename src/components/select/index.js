@@ -48,9 +48,8 @@ const Select = ({ autoselect, multiple, defaultArr }) => {
 
   const handleFocusedItem = useCallback(
     (evt) => {
-      let focusedElement = evt.srcElement;
+      let focusedElement = evt.target;
       focusedElement.addEventListener("keyup", (evt) => {
-        if (evt.target.tagName !== `LI`) return;
         if (evt.key === `Enter` || autoselect) document.activeElement.click();
         if (
           evt.key === `ArrowUp` &&
