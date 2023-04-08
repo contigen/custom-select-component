@@ -102,7 +102,7 @@ const Select = ({ autoselect, multiple, defaultArr }) => {
     listElement?.addEventListener(`focusin`, handleFocusedItem);
     return () => {
       detailsElement?.removeEventListener(`keyup`, triggerCloseState);
-      listElement?.removeEventListener(`focusin`, triggerCloseState);
+      listElement?.removeEventListener(`focusin`, handleFocusedItem);
     };
   }, [handleFocusedItem, triggerCloseState]);
 
